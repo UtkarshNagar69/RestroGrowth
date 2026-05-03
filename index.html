@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("rg-theme") || "dark";
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RestroGrowth – Scale Your Restaurant Online</title>
+    <meta
+      name="description"
+      content="RestroGrowth helps restaurant owners launch and scale on Swiggy, Zomato and cloud kitchen platforms across India."
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .trusted-strip {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 4rem;
+        padding: 1.2rem 2.5rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 60px;
+        backdrop-filter: blur(12px);
+        box-shadow: var(--shadow-card);
+        position: relative;
+        z-index: 1;
+      }
+      .trusted-strip > span {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-weight: 700;
+      }
+      .trusted-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.86rem;
+        font-weight: 600;
+      }
+      .trusted-badge .dot-green {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--accent-green);
+        flex-shrink: 0;
+        box-shadow: 0 0 8px rgba(52, 211, 153, 0.4);
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 1.8rem;
+        margin-top: 3.5rem;
+      }
+      .step {
+        position: relative;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 2.2rem;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-card);
+        overflow: hidden;
+      }
+      .step::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at 50% 0%,
+          var(--card-glow),
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .step:hover {
+        border-color: rgba(249, 115, 22, 0.25);
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-card), var(--shadow-glow);
+      }
+      .step-num {
+        width: 50px;
+        height: 50px;
+        border-radius: 14px;
+        background: var(--gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "DM Serif Display", serif;
+        font-size: 1.3rem;
+        font-weight: 400;
+        margin-bottom: 1.2rem;
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(249, 115, 22, 0.3);
+      }
+      .step h3 {
+        font-size: 1.05rem;
+        margin-bottom: 0.5rem;
+      }
+      .step p {
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        line-height: 1.75;
+      }
+      .connector {
+        position: absolute;
+        top: 42px;
+        right: -18px;
+        color: var(--accent-2);
+        font-size: 1.3rem;
+        z-index: 1;
+        opacity: 0.5;
+      }
+      @media (max-width: 768px) {
+        .connector {
+          display: none;
+        }
+      }
+
+      .platform-logos {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 3rem;
+      }
+      .platform-pill {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 50px;
+        padding: 0.65rem 1.5rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.35s;
+        box-shadow: var(--shadow-card);
+        backdrop-filter: blur(4px);
+      }
+      .platform-pill:hover {
+        border-color: var(--accent);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-card), var(--shadow-glow);
+      }
+      .platform-pill .p-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+      }
+      .zomato-dot {
+        background: #e23744;
+        box-shadow: 0 0 6px rgba(226, 55, 68, 0.4);
+      }
+      .swiggy-dot {
+        background: #ff6900;
+        box-shadow: 0 0 6px rgba(255, 105, 0, 0.4);
+      }
+      .fssai-dot {
+        background: #10b981;
+        box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+      }
+      .gst-dot {
+        background: #f97316;
+        box-shadow: 0 0 6px rgba(249, 115, 22, 0.4);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Scroll progress bar -->
+    <div class="scroll-progress"></div>
+    <!-- Cursor glow -->
+    <div class="cursor-glow"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"
+            />
+          </svg>
+        </div>
+        <span class="nav-logo-text">Restro<span>Growth</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div class="nav-time" id="nav-clock"></div>
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          onclick="toggleTheme()"
+          aria-label="Toggle theme"
+          title="Toggle theme"
+        >
+          <span class="toggle-icon">☀️</span>
+        </button>
+        <button class="btn-login">Get Started</button>
+        <div class="hamburger" id="hamburger">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" style="min-height: 100vh">
+      <!-- Particle network background -->
+      <canvas id="particles-canvas"></canvas>
+      <!-- Decorative parallax orbs -->
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <!-- Floating food icons -->
+      <div class="floating-icons">
+        <span class="float-icon" style="top: 12%; left: 8%">🍕</span>
+        <span class="float-icon" style="top: 25%; right: 12%">🍜</span>
+        <span class="float-icon" style="top: 60%; left: 5%">🍔</span>
+        <span class="float-icon" style="top: 70%; right: 8%">🥘</span>
+        <span class="float-icon" style="top: 40%; left: 15%">🍱</span>
+        <span class="float-icon" style="top: 15%; right: 20%">🧁</span>
+        <span class="float-icon" style="top: 80%; left: 20%">🥗</span>
+        <span class="float-icon" style="top: 50%; right: 18%">🍳</span>
+      </div>
+
+      <div class="hero-badge">🍽️ India's #1 Restaurant Growth Partner</div>
+      <h1>
+        Scale Your Restaurant<br /><span
+          class="gradient-text"
+          id="hero-typewriter"
+          >Faster Than Ever</span
+        ><span class="typewriter-cursor"></span>
+      </h1>
+      <p>
+        We handle Zomato &amp; Swiggy onboarding, branding, and
+        everything in between — so you can focus on cooking.
+      </p>
+      <div class="hero-btns">
+        <a href="services.html" class="btn-primary">Explore Our Services →</a>
+        <a href="pricing.html" class="btn-outline">View Pricing</a>
+      </div>
+      <div class="trusted-strip">
+        <span>Trusted By</span>
+        <div class="trusted-badge">
+          <span class="dot-green"></span> 2,000+ Kitchens Launched
+        </div>
+        <div class="trusted-badge">
+          <span class="dot-green"></span> 300+ Cities Covered
+        </div>
+        <div class="trusted-badge">
+          <span class="dot-green"></span> 50+ Expert Team
+        </div>
+        <div class="trusted-badge">
+          <span class="dot-green"></span> 4.9★ Rated
+        </div>
+      </div>
+    </section>
+
+    <!-- PLATFORMS -->
+    <section
+      style="
+        padding: 4rem 5%;
+        text-align: center;
+        background: var(--bg-secondary);
+      "
+    >
+      <div class="section-badge">Platforms We Work With</div>
+      <h2 class="section-title">
+        Your Kitchen on Every<br /><span class="gradient-text"
+          >Major Platform</span
+        >
+      </h2>
+      <p class="section-sub">
+        We onboard and optimise your restaurant on all major food delivery and
+        cloud kitchen platforms.
+      </p>
+      <div class="platform-logos">
+        <div class="platform-pill">
+          <span class="p-dot zomato-dot"></span>Zomato
+        </div>
+        <div class="platform-pill">
+          <span class="p-dot swiggy-dot"></span>Swiggy
+        </div>
+        <div class="platform-pill">
+          <span class="p-dot" style="background: #f59e0b"></span>Brand Building
+        </div>
+        <div class="platform-pill">
+          <span class="p-dot" style="background: #ec4899"></span>Menu Design
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section>
+      <div class="text-center">
+        <div class="section-badge">How It Works</div>
+        <div class="section-divider"></div>
+        <h2 class="section-title">
+          From Zero to Listed<br /><span class="gradient-text">in 7 Days</span>
+        </h2>
+        <p class="section-sub">
+          Our streamlined process gets your restaurant live and earning on top
+          food platforms in record time.
+        </p>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot">1</div>
+          <h3>Consultation Call</h3>
+          <p>
+            Tell us about your kitchen, cuisine, and goals. We assess your needs
+            and recommend the best plan tailored for your business.
+          </p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">2</div>
+          <h3>Document Setup</h3>
+          <p>
+            We collect and prepare all required documents — PAN,
+            bank details, and more — entirely via WhatsApp or email.
+          </p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">3</div>
+          <h3>Platform Onboarding</h3>
+          <p>
+            Our specialists handle Swiggy and Zomato account setup, menu
+            configuration, photo shoots, and initial optimisation.
+          </p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">4</div>
+          <h3>Go Live &amp; Scale</h3>
+          <p>
+            Your restaurant goes live! We continuously optimise ratings, run ad
+            campaigns, and refine your menu to maximise revenue.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISION / VALUES / PROMISE -->
+    <section style="background: var(--bg-secondary)">
+      <div class="text-center">
+        <div class="section-badge">Our Story</div>
+        <div class="section-divider"></div>
+        <h2 class="section-title">
+          Pioneering the Future of<br /><span class="gradient-text"
+            >Digital Dining</span
+          >
+        </h2>
+        <p class="section-sub">
+          We're more than a consultancy. We're your dedicated partner in
+          navigating the complex world of cloud kitchens and digital food
+          platforms.
+        </p>
+      </div>
+      <div class="cards-grid" style="margin-top: 3rem">
+        <div class="glow-card">
+          <div class="card-num blue">1</div>
+          <h3>Our Vision</h3>
+          <p>
+            To become the backbone of India's digital food ecosystem, making
+            restaurant ownership accessible and profitable for every aspiring
+            foodpreneur.
+          </p>
+        </div>
+        <div class="glow-card">
+          <div class="card-num teal">2</div>
+          <h3>Our Values</h3>
+          <p>
+            Transparency, radical speed, and real human support are at the core
+            of every partnership we build at RestroGrowth.
+          </p>
+        </div>
+        <div class="glow-card">
+          <div class="card-num green">3</div>
+          <h3>Our Promise</h3>
+          <p>
+            We don't just provide services; we stick with you as partners until
+            your kitchen is successfully scaled and truly profitable.
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- TESTIMONIALS -->
+    <section>
+      <div class="text-center">
+        <div class="section-badge">Testimonials</div>
+        <div class="section-divider"></div>
+        <h2 class="section-title">
+          Loved by <span class="gradient-text">Foodpreneurs</span>
+        </h2>
+        <p class="section-sub">
+          Hear from restaurant owners who launched and scaled with RestroGrowth.
+        </p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p>
+            "RestroGrowth got my cloud kitchen listed on Zomato within 5 days.
+            The team handled everything — I just had to cook!"
+          </p>
+          <div class="testimonial-author">
+            <div
+              class="avatar"
+              style="background: linear-gradient(135deg, #f97316, #e11d48)"
+            >
+              R
+            </div>
+            <div class="author-info">
+              <strong>Rahul Sharma</strong
+              ><span>Cloud Kitchen Owner, Delhi</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p>
+            "From menu optimization to Swiggy onboarding, they handled it all.
+            Revenue doubled in the first month!"
+          </p>
+          <div class="testimonial-author">
+            <div
+              class="avatar"
+              style="background: linear-gradient(135deg, #0d9488, #14b8a6)"
+            >
+              P
+            </div>
+            <div class="author-info">
+              <strong>Priya Menon</strong><span>Home Chef, Bangalore</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p>
+            "The combo onboarding for Swiggy + Zomato was a game changer. Best
+            investment I made for my restaurant."
+          </p>
+          <div class="testimonial-author">
+            <div
+              class="avatar"
+              style="background: linear-gradient(135deg, #f59e0b, #ef4444)"
+            >
+              A
+            </div>
+            <div class="author-info">
+              <strong>Arjun Patel</strong><span>Restaurant Owner, Mumbai</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE TICKER -->
+    <div class="marquee-section">
+      <div class="marquee-track">
+        <div class="marquee-item">
+          <span class="m-icon">🍕</span>Zomato Onboarding
+        </div>
+        <span class="marquee-sep">●</span>
+        <div class="marquee-item">
+          <span class="m-icon">🛵</span>Swiggy Setup
+        </div>
+        <span class="marquee-sep">●</span>
+        <div class="marquee-item">
+          <span class="m-icon">✨</span>Brand Building
+        </div>
+        <span class="marquee-sep">●</span>
+        <div class="marquee-item">
+          <span class="m-icon">📸</span>Food Photography
+        </div>
+        <span class="marquee-sep">●</span>
+        <div class="marquee-item">
+          <span class="m-icon">📈</span>Ad Campaigns
+        </div>
+        <span class="marquee-sep">●</span>
+        <div class="marquee-item">
+          <span class="m-icon">🏪</span>Cloud Kitchen Setup
+        </div>
+        <span class="marquee-sep">●</span>
+        <!-- Duplicate for seamless loop -->
+        <div class="marquee-item">
+          <span class="m-icon">🍕</span>Zomato Onboarding
+        </div>
+        <span class="marquee-sep">●</span>
+        <div class="marquee-item">
+          <span class="m-icon">🛵</span>Swiggy Setup
+        </div>
+        <span class="marquee-sep">●</span>
+        <div class="marquee-item">
+          <span class="m-icon">✨</span>Brand Building
+        </div>
+        <span class="marquee-sep">●</span>
+        <div class="marquee-item">
+          <span class="m-icon">📸</span>Food Photography
+        </div>
+        <span class="marquee-sep">●</span>
+        <div class="marquee-item">
+          <span class="m-icon">📈</span>Ad Campaigns
+        </div>
+        <span class="marquee-sep">●</span>
+        <div class="marquee-item">
+          <span class="m-icon">🏪</span>Cloud Kitchen Setup
+        </div>
+        <span class="marquee-sep">●</span>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <section class="cta-section" style="background: var(--bg-secondary)">
+      <div class="section-badge">Ready to Launch?</div>
+      <h2>
+        Start Your Restaurant's<br /><span class="gradient-text"
+          >Growth Journey Today</span
+        >
+      </h2>
+      <p>
+        Join 2,000+ kitchens across India that trust RestroGrowth to handle
+        their digital presence.
+      </p>
+      <a
+        href="contact.html"
+        class="btn-primary"
+        style="font-size: 1.05rem; padding: 1rem 2.5rem"
+        >Let's Get You Started →</a
+      >
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a
+            href="index.html"
+            class="nav-logo"
+            style="margin-bottom: 0.8rem; display: inline-flex"
+          >
+            <div class="nav-logo-icon">
+              <svg
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                style="width: 20px; height: 20px; fill: white"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"
+                />
+              </svg>
+            </div>
+            <span class="nav-logo-text">Restro<span>Growth</span></span>
+          </a>
+          <p>
+            India's most trusted restaurant growth partner. We help you launch,
+            grow, and dominate on Swiggy & Zomato.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="services.html">Zomato Onboarding</a></li>
+            <li><a href="services.html">Swiggy Onboarding</a></li>
+            <li><a href="services.html">Brand Building</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li>
+              <a href="mailto:hello@restrogrowth.in">hello@restrogrowth.in</a>
+            </li>
+            <li><a href="tel:+919999999999">+91 99999 99999</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">WhatsApp</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 RestroGrowth. All rights reserved.</p>
+        <p>Made with ❤️ for Indian Foodpreneurs</p>
+      </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("rg-theme") || "dark";
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us – RestroGrowth</title>
+    <meta
+      name="description"
+      content="Get in touch with RestroGrowth. Book a free consultation and start your restaurant growth journey today."
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .contact-hero {
+        min-height: 45vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 120px 5% 4rem;
+        background: radial-gradient(
+          ellipse 80% 50% at 50% -10%,
+          rgba(249, 115, 22, 0.18),
+          transparent
+        );
+      }
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 4rem;
+        align-items: start;
+      }
+      @media (max-width: 768px) {
+        .contact-grid {
+          grid-template-columns: 1fr;
+          gap: 2.5rem;
+        }
+      }
+      .contact-info h2 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+      }
+      .contact-info p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.75;
+        margin-bottom: 2rem;
+      }
+      .contact-method {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .c-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        background: rgba(249, 115, 22, 0.12);
+        border: 1px solid rgba(249, 115, 22, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        flex-shrink: 0;
+      }
+      .c-detail strong {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+      }
+      .c-detail a,
+      .c-detail span {
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+      }
+      .c-detail a:hover {
+        color: var(--accent-2);
+      }
+      .form-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 2.5rem;
+      }
+      .form-card h3 {
+        font-size: 1.3rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+      }
+      .form-card p {
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      @media (max-width: 540px) {
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+      }
+      .form-group {
+        margin-bottom: 1.2rem;
+      }
+      .form-group label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 0.45rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text-primary);
+        font-family: "Inter", sans-serif;
+        font-size: 0.92rem;
+        padding: 0.75rem 1rem;
+        outline: none;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        border-color: var(--accent);
+        background: rgba(249, 115, 22, 0.05);
+      }
+      .form-group textarea {
+        resize: vertical;
+        min-height: 110px;
+      }
+      .form-group select option {
+        background: #0d1224;
+      }
+      .btn-submit {
+        width: 100%;
+        padding: 1rem;
+        background: var(--gradient);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 0.5rem;
+      }
+      .btn-submit:hover {
+        box-shadow: 0 8px 28px rgba(249, 115, 22, 0.4);
+        transform: translateY(-2px);
+      }
+      .success-msg {
+        display: none;
+        text-align: center;
+        padding: 2rem;
+      }
+      .success-msg .check {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+      }
+      .success-msg h3 {
+        font-size: 1.3rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+      }
+      .success-msg p {
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+      }
+      .wapp-float {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 58px;
+        height: 58px;
+        background: #25d366;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.7rem;
+        box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
+        cursor: pointer;
+        z-index: 999;
+        text-decoration: none;
+        transition: transform 0.3s;
+      }
+      .wapp-float:hover {
+        transform: scale(1.1);
+      }
+      .why-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 3rem;
+      }
+      .why-item {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: center;
+      }
+      .why-item .why-icon {
+        font-size: 2rem;
+        margin-bottom: 0.7rem;
+      }
+      .why-item h3 {
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+      }
+      .why-item p {
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scroll-progress"></div>
+    <div class="cursor-glow"></div>
+
+    <nav class="navbar" id="navbar">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"
+            />
+          </svg>
+        </div>
+        <span class="nav-logo-text">Restro<span>Growth</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div class="nav-time" id="nav-clock"></div>
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          onclick="toggleTheme()"
+          aria-label="Toggle theme"
+          title="Toggle theme"
+        >
+          <span class="toggle-icon">☀️</span>
+        </button>
+        <button class="btn-login">Get Started</button>
+        <div class="hamburger" id="hamburger">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="contact-hero">
+      <div class="section-badge">Get In Touch</div>
+      <h1 class="section-title" style="font-size: clamp(2rem, 5vw, 3.5rem)">
+        Let's Build Your<br /><span class="gradient-text"
+          >Restaurant Empire</span
+        >
+      </h1>
+      <p class="section-sub" style="margin-top: 1rem">
+        Book a free consultation call with our experts. No commitment — just
+        real advice to get you started.
+      </p>
+    </div>
+
+    <section>
+      <div class="contact-grid">
+        <!-- LEFT: Info -->
+        <div class="contact-info">
+          <div class="section-badge">Contact Info</div>
+          <h2>
+            We're Here to <span class="gradient-text">Help You Grow</span>
+          </h2>
+          <p>
+            Whether you're a home chef just starting out or an established
+            restaurant wanting to scale online — our team is ready to guide you
+            every step of the way.
+          </p>
+
+          <div class="contact-method">
+            <div class="c-icon">📧</div>
+            <div class="c-detail">
+              <strong>Email Us</strong>
+              <a href="mailto:hello@restrogrowth.in">hello@restrogrowth.in</a>
+            </div>
+          </div>
+          <div class="contact-method">
+            <div class="c-icon">📞</div>
+            <div class="c-detail">
+              <strong>Call / WhatsApp</strong>
+              <a href="tel:+919999999999">+91 99999 99999</a>
+            </div>
+          </div>
+          <div class="contact-method">
+            <div class="c-icon">🕐</div>
+            <div class="c-detail">
+              <strong>Business Hours</strong>
+              <span>Mon–Sat, 10:00 AM – 7:00 PM IST</span>
+            </div>
+          </div>
+          <div class="contact-method">
+            <div class="c-icon">📍</div>
+            <div class="c-detail">
+              <strong>Head Office</strong>
+              <span>Bengaluru, Karnataka, India</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 2rem">
+            <div class="section-badge" style="margin-bottom: 1.2rem">
+              Response Times
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.7rem">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 0.7rem 1rem;
+                  background: var(--bg-card);
+                  border: 1px solid var(--border);
+                  border-radius: 10px;
+                "
+              >
+                <span style="font-size: 0.88rem">WhatsApp</span
+                ><span
+                  style="font-size: 0.82rem; color: #10b981; font-weight: 700"
+                  >Within 1 hour</span
+                >
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 0.7rem 1rem;
+                  background: var(--bg-card);
+                  border: 1px solid var(--border);
+                  border-radius: 10px;
+                "
+              >
+                <span style="font-size: 0.88rem">Email</span
+                ><span
+                  style="font-size: 0.82rem; color: #f59e0b; font-weight: 700"
+                  >Within 4 hours</span
+                >
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 0.7rem 1rem;
+                  background: var(--bg-card);
+                  border: 1px solid var(--border);
+                  border-radius: 10px;
+                "
+              >
+                <span style="font-size: 0.88rem">Contact Form</span
+                ><span
+                  style="font-size: 0.82rem; color: #f97316; font-weight: 700"
+                  >Within 24 hours</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Form -->
+        <div class="form-card" id="contactForm">
+          <h3>Book a Free Consultation</h3>
+          <p>
+            Fill in your details and our team will reach out to schedule a call.
+          </p>
+
+          <div id="formContent">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fname">First Name</label>
+                <input type="text" id="fname" placeholder="Rahul" />
+              </div>
+              <div class="form-group">
+                <label for="lname">Last Name</label>
+                <input type="text" id="lname" placeholder="Sharma" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="rahul@yourkitchen.com"
+              />
+            </div>
+            <div class="form-group">
+              <label for="phone">WhatsApp Number</label>
+              <input type="tel" id="phone" placeholder="+91 98765 43210" />
+            </div>
+            <div class="form-group">
+              <label for="city">City</label>
+              <input type="text" id="city" placeholder="Bengaluru" />
+            </div>
+            <div class="form-group">
+              <label for="service">Service Interested In</label>
+              <select id="service">
+                <option value="">Select a service...</option>
+                <option>Combo Onboarding (Swiggy + Zomato)</option>
+                <option>Zomato Onboarding Only</option>
+                <option>Swiggy Onboarding Only</option>
+
+                <option>Brand Building</option>
+                <option>Cloud Kitchen Setup</option>
+                <option>Pro Scale Plan (Monthly)</option>
+                <option>Other / Not Sure</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Tell Us About Your Kitchen</label>
+              <textarea
+                id="message"
+                placeholder="Briefly describe your restaurant concept, current status, and goals..."
+              ></textarea>
+            </div>
+            <button class="btn-submit" onclick="submitForm()">
+              Send Message & Book Call →
+            </button>
+          </div>
+
+          <div class="success-msg" id="successMsg">
+            <div class="check">✅</div>
+            <h3>Message Received!</h3>
+            <p>
+              Our team will reach out within 24 hours. For faster response,
+              WhatsApp us at +91 99999 99999.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section style="background: var(--bg-secondary)">
+      <div class="text-center">
+        <div class="section-badge">Why RestroGrowth</div>
+        <h2 class="section-title">
+          The RestroGrowth <span class="gradient-text">Difference</span>
+        </h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-item">
+          <div class="why-icon">⚡</div>
+          <h3>Lightning Fast</h3>
+          <p>Most clients go live within 3–7 days of signing up.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon">🤝</div>
+          <h3>Human Support</h3>
+          <p>Real people answer your questions — no bots, no scripts.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon">💰</div>
+          <h3>Best Prices</h3>
+          <p>
+            Market-leading pricing with transparent, no-hidden-fee policies.
+          </p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon">🏆</div>
+          <h3>Proven Results</h3>
+          <p>2000+ kitchens successfully launched across 300+ cities.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon">🔒</div>
+          <h3>100% Compliant</h3>
+          <p>All our registrations are filed correctly and legally.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon">📈</div>
+          <h3>Growth Focused</h3>
+          <p>We optimise your listings for maximum orders and revenue.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a
+            href="index.html"
+            class="nav-logo"
+            style="margin-bottom: 0.8rem; display: inline-flex"
+          >
+            <div class="nav-logo-icon">
+              <svg
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                style="width: 20px; height: 20px; fill: white"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"
+                />
+              </svg>
+            </div>
+            <span class="nav-logo-text">Restro<span>Growth</span></span>
+          </a>
+          <p>India's most trusted restaurant growth partner.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="services.html">Zomato Onboarding</a></li>
+            <li><a href="services.html">Swiggy Onboarding</a></li>
+
+            <li><a href="services.html">Brand Building</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li>
+              <a href="mailto:hello@restrogrowth.in">hello@restrogrowth.in</a>
+            </li>
+            <li><a href="tel:+919999999999">+91 99999 99999</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">WhatsApp</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 RestroGrowth. All rights reserved.</p>
+        <p>Made with ❤️ for Indian Foodpreneurs</p>
+      </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a
+      href="https://wa.me/919999999999"
+      class="wapp-float"
+      target="_blank"
+      title="Chat on WhatsApp"
+      >💬</a
+    >
+
+    <script src="js/main.js"></script>
+    <script>
+      function submitForm() {
+        const fname = document.getElementById("fname").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        if (!fname || !email || !phone) {
+          alert("Please fill in your name, email, and phone number.");
+          return;
+        }
+        document.getElementById("formContent").style.display = "none";
+        document.getElementById("successMsg").style.display = "block";
+      }
+    </script>
+  </body>
+</html>
