@@ -308,14 +308,14 @@
             <div class="c-icon">📧</div>
             <div class="c-detail">
               <strong>Email Us</strong>
-              <a href="mailto:hello@restrogrowth.in">hello@restrogrowth.in</a>
+              <a href="mailto:info@restrogrowthconsulting.com">info@restrogrowthconsulting.com</a>
             </div>
           </div>
           <div class="contact-method">
             <div class="c-icon">📞</div>
             <div class="c-detail">
               <strong>Call / WhatsApp</strong>
-              <a href="tel:+919999999999">+91 99999 99999</a>
+              <a href="tel:+919355533597">+91 93555 33597</a>
             </div>
           </div>
           <div class="contact-method">
@@ -400,15 +400,15 @@
             Fill in your details and our team will reach out to schedule a call.
           </p>
 
-          <div id="formContent">
+          <form id="formContent">
             <div class="form-row">
               <div class="form-group">
                 <label for="fname">First Name</label>
-                <input type="text" id="fname" placeholder="Rahul" />
+                <input type="text" id="fname" name="First Name" placeholder="Rahul" required />
               </div>
               <div class="form-group">
                 <label for="lname">Last Name</label>
-                <input type="text" id="lname" placeholder="Sharma" />
+                <input type="text" id="lname" name="Last Name" placeholder="Sharma" />
               </div>
             </div>
             <div class="form-group">
@@ -416,25 +416,26 @@
               <input
                 type="email"
                 id="email"
+                name="Email"
                 placeholder="rahul@yourkitchen.com"
+                required
               />
             </div>
             <div class="form-group">
               <label for="phone">WhatsApp Number</label>
-              <input type="tel" id="phone" placeholder="+91 98765 43210" />
+              <input type="tel" id="phone" name="WhatsApp Number" placeholder="+91 98765 43210" required />
             </div>
             <div class="form-group">
               <label for="city">City</label>
-              <input type="text" id="city" placeholder="Bengaluru" />
+              <input type="text" id="city" name="City" placeholder="Bengaluru" />
             </div>
             <div class="form-group">
               <label for="service">Service Interested In</label>
-              <select id="service">
+              <select id="service" name="Service Interested In">
                 <option value="">Select a service...</option>
                 <option>Combo Onboarding (Swiggy + Zomato)</option>
                 <option>Zomato Onboarding Only</option>
                 <option>Swiggy Onboarding Only</option>
-
                 <option>Brand Building</option>
                 <option>Pro Scale Plan (Monthly)</option>
                 <option>Other / Not Sure</option>
@@ -444,20 +445,21 @@
               <label for="message">Tell Us About Your Kitchen</label>
               <textarea
                 id="message"
+                name="Message"
                 placeholder="Briefly describe your restaurant concept, current status, and goals..."
               ></textarea>
             </div>
-            <button class="btn-submit" onclick="submitForm()">
+            <button type="submit" class="btn-submit" id="submitBtn">
               Send Message & Book Call →
             </button>
-          </div>
+          </form>
 
           <div class="success-msg" id="successMsg">
             <div class="check">✅</div>
             <h3>Message Received!</h3>
             <p>
               Our team will reach out within 24 hours. For faster response,
-              WhatsApp us at +91 99999 99999.
+              WhatsApp us at +91 93555 33597.
             </p>
           </div>
         </div>
@@ -554,9 +556,9 @@
           <h4>Contact</h4>
           <ul>
             <li>
-              <a href="mailto:hello@restrogrowth.in">hello@restrogrowth.in</a>
+              <a href="mailto:info@restrogrowthconsulting.com">info@restrogrowthconsulting.com</a>
             </li>
-            <li><a href="tel:+919999999999">+91 99999 99999</a></li>
+            <li><a href="tel:+919355533597">+91 93555 33597</a></li>
             <li><a href="#">Instagram</a></li>
             <li><a href="#">WhatsApp</a></li>
           </ul>
@@ -570,7 +572,7 @@
 
     <!-- WhatsApp Float -->
     <a
-      href="https://wa.me/919999999999"
+      href="https://wa.me/919355533597"
       class="wapp-float"
       target="_blank"
       title="Chat on WhatsApp"
@@ -578,18 +580,45 @@
     >
 
     <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
-      function submitForm() {
-        const fname = document.getElementById("fname").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const phone = document.getElementById("phone").value.trim();
-        if (!fname || !email || !phone) {
-          alert("Please fill in your name, email, and phone number.");
-          return;
-        }
-        document.getElementById("formContent").style.display = "none";
-        document.getElementById("successMsg").style.display = "block";
-      }
+      // ━━━ EmailJS Configuration ━━━
+      // Replace these 3 values with your own from https://emailjs.com
+      const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+      const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
+      const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+
+      const form = document.getElementById("formContent");
+      const btn = document.getElementById("submitBtn");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        btn.disabled = true;
+        btn.textContent = "Sending...";
+
+        const templateParams = {
+          first_name: document.getElementById("fname").value.trim(),
+          last_name: document.getElementById("lname").value.trim(),
+          email: document.getElementById("email").value.trim(),
+          phone: document.getElementById("phone").value.trim(),
+          city: document.getElementById("city").value.trim(),
+          service: document.getElementById("service").value,
+          message: document.getElementById("message").value.trim(),
+        };
+
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+          .then(function () {
+            form.style.display = "none";
+            document.getElementById("successMsg").style.display = "block";
+          })
+          .catch(function () {
+            alert("Oops! Something went wrong. Please try again.");
+            btn.disabled = false;
+            btn.textContent = "Send Message & Book Call →";
+          });
+      });
     </script>
   </body>
 </html>
